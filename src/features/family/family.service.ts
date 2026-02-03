@@ -23,7 +23,7 @@ export const updateMemberStorage = async (data: Member) => {
   return newMembers;
 }
 
-export const deleteMemberStorage = (id: string) => {
+export const deleteMemberStorage = async (id: string) => {
   const stored = localStorage.getItem(KEY);
   if (!stored) return [];
 
