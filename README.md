@@ -1,73 +1,135 @@
-# React + TypeScript + Vite
+# 🌳 Family Tree App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A modern web application for **managing family members and visualizing a family tree**, built with **React + Vite** and a contemporary tech stack focused on performance, type safety, and developer experience.
 
-Currently, two official plugins are available:
+This project allows you to:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+* Register and manage family members
+* Define family relationships using `parentId`
+* Visualize an interactive family tree
+* Navigate to detailed views of each member (parent and children)
+* Persist data locally using LocalStorage
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🚀 Tech Stack
 
-## Expanding the ESLint configuration
+* **React**
+* **Vite**
+* **TypeScript**
+* **Tailwind CSS v4**
+* **shadcn/ui** (design system)
+* **TanStack Router** (routing)
+* **TanStack React Query** (async state management)
+* **Zustand** (lightweight global state)
+* **Zod** (schema validation)
+* **React Flow** (graph visualization)
+* **D3.js (d3-hierarchy / stratify)** (tree construction)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 🧠 Tree Concept
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+The family tree is built using **only `parentId`**:
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* `parentId` → points to the **direct ancestor** (father/mother)
+* Members without a `parentId` are considered **root nodes**
+* Children are inferred automatically
+
+This approach enables:
+
+* High scalability
+* Simple data modeling
+* Seamless integration with `d3.stratify`
+
+---
+
+## 📂 Project Structure
+
+```bash
+src/
+├─ pages/
+│  ├─ HomePage.tsx
+│  ├─ MembersPage.tsx
+│  └─ MemberDetailsPage.tsx
+│
+├─ routes/
+│  ├─ index.tsx
+│  ├─ members.tsx
+│  └─ members.$memberId.tsx
+│
+├─ features/family/
+│  ├─ FamilyTree.tsx
+│  ├─ MemberForm.tsx
+│  ├─ family.store.ts
+│  ├─ family.schema.ts
+│  ├─ family.storage.ts
+│  └─ buildGraph.ts
+│
+├─ styles/
+│  └─ index.css
+│
+└─ main.tsx
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🧭 Main Routes
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+* `/` → Home
+* `/members` → Members list + family tree
+* `/members/:memberId` → Member details (parent + children)
+
+Routing is handled by **TanStack Router**, including navigation triggered by React Flow node clicks.
+
+---
+
+## 🌳 Tree Visualization
+
+* Built with **d3-hierarchy (`stratify`)**
+* Rendered using **React Flow**
+* Each node represents a family member
+* Clicking a node navigates to the member’s details page
+
+---
+
+## 💾 Data Persistence
+
+* Data stored in **LocalStorage**
+* Accessed and synced using **React Query** (`useQuery` / `invalidateQueries`)
+* Designed for easy migration to a backend API in the future
+
+---
+
+## 🛠️ Running the Project
+
+```bash
+# install dependencies
+npm install
+
+# start development server
+npm run dev
 ```
+
+---
+
+## 🎯 Roadmap
+
+* [ ] Photo upload
+* [ ] Edit member details
+* [ ] Genealogical breadcrumb navigation
+* [ ] Sub-tree visualization per member
+* [ ] Export family tree
+* [ ] Authentication
+* [ ] Backend API + database
+
+---
+
+## 👨‍💻 Author
+
+Developed by **Dedaldino Daniel**
+Educational project and foundation for real-world family management applications.
+
+---
+
+## 📜 License
