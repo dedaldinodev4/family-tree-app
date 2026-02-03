@@ -49,7 +49,7 @@ export function MemberForm() {
         accept="image/*"
       />
 
-      <Button type="submit">Adicionar</Button>
+      <Button className="cursor-pointer" type="submit">Adicionar</Button>
     </form>
   );
 }
