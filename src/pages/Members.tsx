@@ -28,7 +28,7 @@ export default function Members() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="p-4">
-          <h2 className="font-semibold mb-3">Adicionar membro</h2>
+          <h2 className="font-semibold mb-3">Novo Membro</h2>
           <MemberForm />
         </Card>
 
