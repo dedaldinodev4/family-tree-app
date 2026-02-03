@@ -27,6 +27,7 @@ export function MemberForm() {
       role: "",
       phone: "",
       photo: "",
+      email: "",
       parentId: null,
 
     },
@@ -83,6 +84,7 @@ export function MemberForm() {
           )}
         />
         <Input placeholder="Nome" type="text" {...register("name")} />
+        <Input placeholder="Email" type="text" {...register("email")} />
         <Input placeholder="Telefone" type="text" {...register("phone")} />
         <Input placeholder="Papel/Função" type="text" {...register("role")} />
         <Input placeholder="Ascedente" type="text" {...register("parentId")} />
