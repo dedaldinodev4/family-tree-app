@@ -1,7 +1,5 @@
 import { useParams, Link } from "@tanstack/react-router";
 import { useMembers } from "@/features/family/family.hooks";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { MemberCard } from "@/features/family/components/MemberCard";
 
