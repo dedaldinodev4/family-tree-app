@@ -1,11 +1,18 @@
+import { useRouter } from "@tanstack/react-router";
 import { 
   useQuery, 
   useMutation, 
   useQueryClient 
 } from "@tanstack/react-query";
-import { deleteMemberStorage, getMembers, saveMembers, updateMemberStorage } from "./family.service";
+import { toast } from "sonner"
+
+import { 
+  deleteMemberStorage, 
+  getMembers, 
+  saveMembers, 
+  updateMemberStorage 
+} from "./family.service";
 import type { Member } from "./family.schema";
-import { useRouter } from "@tanstack/react-router";
 
 export const useMembers = () => {
   return useQuery({
@@ -22,6 +29,7 @@ export const useSaveMember = () => {
       await saveMembers([...members, member]);
     },
     onSuccess: () => {
+      toast.success("Membro adicionado com sucesso.");
       qc.invalidateQueries({
         queryKey: ["members"]
       });
@@ -29,13 +37,14 @@ export const useSaveMember = () => {
   });
 };
 
-export const updateMember = () =>  {
+export const useUpdateMember = () =>  {
   const qc = useQueryClient();
   return  useMutation({
     mutationFn: async (member: Member) => { 
       await updateMemberStorage(member)
     },
     onSuccess: () => {
+      toast.success("Membro editado com sucesso.");
       qc.invalidateQueries({ 
         queryKey: ["members"] 
       });
@@ -43,7 +52,7 @@ export const updateMember = () =>  {
   });
 }
 
-export const deleteMember = () => {
+export const useDeleteMember = () => {
   const qc = useQueryClient();
   const router = useRouter();
   return useMutation({
@@ -51,10 +60,14 @@ export const deleteMember = () => {
       await deleteMemberStorage(id)
     },
     onSuccess: () => {
+      toast.success("Membro apagado com sucesso.");
       qc.invalidateQueries({ 
         queryKey: ["members"] 
       });
       router.navigate({ to: "/members" });
+    },
+    onError: (error: any) => {
+      toast.error(error.message ?? "Erro ao apagar o membro.");
     },
   });
 } 

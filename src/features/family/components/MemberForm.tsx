@@ -34,7 +34,7 @@ export function MemberForm() {
   });
 
   const {
-    handleSubmit, register, formState
+    handleSubmit, register
   } = form;
 
   const onSubmit = (data: Member) => {

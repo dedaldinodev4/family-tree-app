@@ -29,9 +29,10 @@ export const deleteMemberStorage = async (id: string) => {
 
   let members: Member[] = JSON.parse(stored);
 
+
   const hasChildren = members.some((m) => m.parentId === id);
   if (hasChildren) {
-    throw new Error("Cannot delete member with children");
+    throw new Error("Este membro tem descendentes. Remova-os primeiro.");
   }
 
   const newMembers = members.filter((member) => member.id !== id);
