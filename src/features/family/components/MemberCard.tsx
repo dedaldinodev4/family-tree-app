@@ -41,6 +41,7 @@ import { Pencil, Trash2, X } from "lucide-react";
 import { MemberSchema, type Member } from "../family.schema";
 import { useDeleteMember, useUpdateMember } from "../family.hooks";
 import { fileToBase64 } from "@/shared/utils/fileToBase64";
+import { ParentSelectField } from "./ParentSelectField";
 
 export function MemberCard({ member }: { member: Member }) {
   const router = useRouter();
@@ -178,7 +179,7 @@ export function MemberCard({ member }: { member: Member }) {
               <Input placeholder="Email" type="text" {...register("email")} />
               <Input placeholder="Telefone" type="text" {...register("phone")} />
               <Input placeholder="Papel/Função" type="text" {...register("role")} />
-              <Input placeholder="Ascedente" type="text" {...register("parentId")} />
+              <ParentSelectField />
 
               <Button className="cursor-pointer" type="submit">Salvar</Button>
             </form>

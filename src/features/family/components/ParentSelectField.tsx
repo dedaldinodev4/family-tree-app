@@ -32,7 +32,8 @@ export function ParentSelectField() {
             Membro sem pai (raiz)
           </SelectItem>
 
-          {members && members.map((member) => (
+          {members && members
+          .map((member) => (
             <SelectItem key={member.id} value={`${member.id}`}>
                {member.parentId ? "↳ " : ""}
                {member.name}
