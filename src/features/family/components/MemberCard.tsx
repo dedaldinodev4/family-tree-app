@@ -37,7 +37,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 
-import { Pencil, Trash2, X, Phone, Cake, Briefcase } from "lucide-react";
+import { Pencil, Trash2, X, Phone, Cake} from "lucide-react";
 
 import { MemberSchema, type Member } from "../family.schema";
 import { useDeleteMember, useUpdateMember } from "../family.hooks";
