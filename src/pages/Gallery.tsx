@@ -1,6 +1,8 @@
-import { MemberGallery } from "@/features/family/components/MemberGallery";
+import { 
+  MemberGallery 
+} from "@/features/family/components/MemberGallery";
 
-export function Gallery() {
+export default function Gallery() {
 
   return (
     <MemberGallery />

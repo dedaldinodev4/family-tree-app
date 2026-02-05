@@ -35,7 +35,7 @@ export default function RootLayout() {
               Galeria
             </Link>
             <Link
-              to="/histoty"
+              to="/moments"
               className="text-muted-foreground hover:text-foreground"
             >
               Momentos
