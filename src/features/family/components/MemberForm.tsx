@@ -14,12 +14,14 @@ import {
   FormMessage,
   Form
 } from "@/components/ui/form";
+import { ParentSelectField } from "./ParentSelectField";
 
 
 
 export function MemberForm() {
 
   const save = useSaveMember();
+  
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
     defaultValues: {
@@ -87,11 +89,7 @@ export function MemberForm() {
         <Input placeholder="Email" type="text" {...register("email")} />
         <Input placeholder="Telefone" type="text" {...register("phone")} />
         <Input placeholder="Papel/Função" type="text" {...register("role")} />
-        <Input placeholder="Ascedente" type="text" {...register("parentId")} />
-
-        
-
-
+        <ParentSelectField />
 
         <Button className="cursor-pointer" type="submit">Adicionar</Button>
       </form>
