@@ -3,45 +3,51 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useRouter } from "@tanstack/react-router";
 
-import { Card } from "@/components/ui/card";
-import { 
-  Avatar, 
-  AvatarImage, 
-  AvatarFallback 
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback
 } from "@/components/ui/avatar";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle 
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle
 } from "@/components/ui/dialog";
-import { 
-  Form, 
-  FormControl, 
-  FormField, 
-  FormItem, 
-  FormLabel, 
-  FormMessage 
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
 } from "@/components/ui/form";
-import { AlertDialog, 
-  AlertDialogAction, 
-  AlertDialogCancel, 
-  AlertDialogContent, 
-  AlertDialogDescription, 
-  AlertDialogFooter, 
-  AlertDialogHeader, 
-  AlertDialogTitle 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 
-import { Pencil, Trash2, X } from "lucide-react";
+import { Pencil, Trash2, X, Phone, Cake, Briefcase } from "lucide-react";
 
 import { MemberSchema, type Member } from "../family.schema";
 import { useDeleteMember, useUpdateMember } from "../family.hooks";
 import { fileToBase64 } from "@/shared/utils/fileToBase64";
 import { ParentSelectField } from "./ParentSelectField";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
+import { formatDate } from "@/shared/utils/date";
 
 export function MemberCard({ member }: { member: Member }) {
   const router = useRouter();
@@ -94,17 +100,23 @@ export function MemberCard({ member }: { member: Member }) {
 
           <Separator />
 
-          <div className="text-sm space-y-1 font-bold">
-            <p>
-              Email: <span className="font-normal">{member.email}</span>
-            </p>
-            <p>
-              Telefone: <span className="font-normal">{member.phone}</span>
-            </p>
-            <p>
-              ID: <span className="font-normal">{member.id}</span>
-            </p>
-          </div>
+          <CardContent className="space-y-3">
+            {/* Phone */}
+            {member.phone && (
+              <div className="flex items-center gap-2 text-sm">
+                <Phone className="h-4 w-4 text-muted-foreground" />
+                <span>{member.phone}</span>
+              </div>
+            )}
+
+            {/* Birthday */}
+            {member.birthDate && (
+              <div className="flex items-center gap-2 text-sm">
+                <Cake className="h-4 w-4 text-muted-foreground" />
+                <span>{formatDate(new Date(member.birthDate))}</span>
+              </div>
+            )}
+          </CardContent>
 
           <div className="flex gap-2 mt-3">
             <Button
@@ -176,9 +188,42 @@ export function MemberCard({ member }: { member: Member }) {
                 )}
               />
               <Input placeholder="Nome" type="text" {...register("name")} />
-              <Input placeholder="Email" type="text" {...register("email")} />
-              <Input placeholder="Telefone" type="text" {...register("phone")} />
+              <FormField
+                control={form.control}
+                name="birthDate"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant="outline"
+                            className="justify-start text-left font-normal"
+                          >
+                            {field.value
+                              ? format(field.value, "dd/MM/yyyy", { locale: ptBR })
+                              : "Data de Nascimento"}
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          locale={ptBR}
+                          captionLayout="dropdown"
+                        />
+                      </PopoverContent>
+                    </Popover>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               <Input placeholder="Papel/Função" type="text" {...register("role")} />
+              <Input placeholder="Telefone" type="text" {...register("phone")} />
               <ParentSelectField />
 
               <Button className="cursor-pointer" type="submit">Salvar</Button>
