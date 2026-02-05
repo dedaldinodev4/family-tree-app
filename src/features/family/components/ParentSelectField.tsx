@@ -11,7 +11,7 @@ import { useMembers } from "../family.hooks";
 
 export function ParentSelectField() {
   const { setValue, watch } = useFormContext();
-  const { data: members } = useMembers();
+  const { data: members = [] } = useMembers();
 
   const parentId = watch("parentId");
 
@@ -32,8 +32,7 @@ export function ParentSelectField() {
             Membro sem pai (raiz)
           </SelectItem>
 
-          {members && members
-          .map((member) => (
+          {members.map((member) => (
             <SelectItem key={member.id} value={`${member.id}`}>
                {member.parentId ? "↳ " : ""}
                {member.name}
