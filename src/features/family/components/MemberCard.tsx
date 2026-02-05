@@ -58,7 +58,11 @@ export function MemberCard({ member }: { member: Member }) {
 
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
-    defaultValues: member,
+    defaultValues: {
+      ...member,
+      birthDate: member.birthDate ? 
+      new Date(member.birthDate) : undefined
+    },
   });
 
   const {
@@ -66,7 +70,12 @@ export function MemberCard({ member }: { member: Member }) {
   } = form;
 
   const onSubmit = (data: Member) => {
-    updateMember.mutate(data);
+    updateMember.mutate(
+      {
+        ...data,
+        birthDate: data.birthDate ? new Date(data.birthDate) : undefined
+      }
+    );
     setEditOpen(false);
   }
 

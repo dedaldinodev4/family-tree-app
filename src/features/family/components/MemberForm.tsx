@@ -34,7 +34,6 @@ export function MemberForm() {
       phone: "",
       photo: "",
       parentId: null,
-      birthDate: undefined,
     },
   });
 

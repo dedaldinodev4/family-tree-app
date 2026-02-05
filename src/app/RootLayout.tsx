@@ -27,6 +27,29 @@ export default function RootLayout() {
           Family Tree
         </Link>
 
+        <nav className="flex items-center gap-4 text-sm">
+            <Link
+              to="/gallery"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Galeria
+            </Link>
+            <Link
+              to="/histoty"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Momentos
+            </Link>
+
+            <Link
+              to="/about"
+              className="text-muted-foreground hover:text-foreground"
+            >
+              Sobre
+            </Link>
+          </nav>
+
+
         {/* Theme Toggle */}
         <ThemeToggle />
       </header>
