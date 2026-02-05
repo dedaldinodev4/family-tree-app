@@ -125,12 +125,12 @@ export function MomentForm({ onSubmit }: { onSubmit: (data: Moment) => void }) {
                   field.onChange(images);
                 }}
               />
-              <div className="mt-3 grid grid-cols-3 gap-2">
+              <div className="mt-3 flex gap-2 overflow-x-auto py-2">
                 {field.value?.map((img, i) => (
                   <img
                     key={i}
                     src={img}
-                    className="h-24 w-full rounded-md object-cover"
+                    className="h-24 w-24 shrink-0 rounded-md object-cover border border-border"
                   />
                 ))}
               </div>
