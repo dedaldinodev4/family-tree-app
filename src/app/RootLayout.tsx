@@ -7,6 +7,7 @@ import {
   AlertTriangle,
   Info,
 } from "lucide-react";
+import Logo from '/logo.svg'
 
 export default function RootLayout() {
   return (
@@ -24,30 +25,30 @@ export default function RootLayout() {
 
       <header className="flex justify-between items-center border-b p-4 font-semibold">
         <Link to="/" className="text-lg">
-          Family Tree
+          <img src={Logo} alt="Family Tree Logo" className="h-12 w-auto" />
         </Link>
 
         <nav className="flex items-center gap-4 text-sm">
-            <Link
-              to="/gallery"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Galeria
-            </Link>
-            <Link
-              to="/moments"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Momentos
-            </Link>
+          <Link
+            to="/gallery"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Galeria
+          </Link>
+          <Link
+            to="/moments"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Momentos
+          </Link>
 
-            <Link
-              to="/about"
-              className="text-muted-foreground hover:text-foreground"
-            >
-              Sobre
-            </Link>
-          </nav>
+          <Link
+            to="/about"
+            className="text-muted-foreground hover:text-foreground"
+          >
+            Sobre
+          </Link>
+        </nav>
 
 
         {/* Theme Toggle */}
