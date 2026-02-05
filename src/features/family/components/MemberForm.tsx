@@ -15,13 +15,17 @@ import {
   Form
 } from "@/components/ui/form";
 import { ParentSelectField } from "./ParentSelectField";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
 
 
 
 export function MemberForm() {
 
   const save = useSaveMember();
-  
+
   const form = useForm<Member>({
     resolver: zodResolver(MemberSchema),
     defaultValues: {
@@ -29,9 +33,7 @@ export function MemberForm() {
       role: "",
       phone: "",
       photo: "",
-      email: "",
       parentId: null,
-
     },
   });
 
@@ -40,7 +42,12 @@ export function MemberForm() {
   } = form;
 
   const onSubmit = (data: Member) => {
-    save.mutate({ ...data, id: uuid() })
+
+    save.mutate({ 
+      ...data, 
+      id: uuid(),
+      birthDate: data.birthDate ? new Date(data.birthDate?.toISOString()) : undefined
+    })
   }
 
   return (
@@ -86,9 +93,42 @@ export function MemberForm() {
           )}
         />
         <Input placeholder="Nome" type="text" {...register("name")} />
-        <Input placeholder="Email" type="text" {...register("email")} />
-        <Input placeholder="Telefone" type="text" {...register("phone")} />
+        <FormField
+          control={form.control}
+          name="birthDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      className="justify-start text-left font-normal"
+                    >
+                      {field.value
+                        ? format(field.value, "dd/MM/yyyy", { locale: ptBR })
+                        : "Data de Nascimento"}
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    locale={ptBR}
+                    captionLayout="dropdown"
+                  />
+                </PopoverContent>
+              </Popover>
+
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <Input placeholder="Papel/Função" type="text" {...register("role")} />
+        <Input placeholder="Telefone" type="text" {...register("phone")} />
         <ParentSelectField />
 
         <Button className="cursor-pointer" type="submit">Adicionar</Button>
