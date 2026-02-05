@@ -7,7 +7,7 @@ export const MemberSchema = z.object({
   role: z.string().optional(),
   photo: z.string().optional(),
   phone: z.string().optional(),
-  email: z.string().optional(),
+  birthDate: z.date().optional(),
   parentId: z.string().nullable(),
 });
 
