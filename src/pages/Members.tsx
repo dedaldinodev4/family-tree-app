@@ -19,6 +19,10 @@ export default function Members() {
     return <p className="p-6">Carregando membros...</p>
   }
 
+  if (data.length === 0) {
+    return <p>Nenhum membro cadastrado</p>
+  }
+
   return (
     <div className="p-6 space-y-6 max-w-7xl mx-auto">
       <header className="space-y-2">

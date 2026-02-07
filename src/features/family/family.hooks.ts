@@ -1,24 +1,23 @@
 import { useRouter } from "@tanstack/react-router";
-import { 
-  useQuery, 
-  useMutation, 
-  useQueryClient 
+import {
+  useQuery,
+  useMutation,
+  useQueryClient
 } from "@tanstack/react-query";
 import { toast } from "sonner"
-
-import { 
-  deleteMemberStorage, 
-  getMembers, 
-  saveMembers, 
-  updateMemberStorage 
+import {
+  deleteMemberStorage,
+  getMembers,
+  saveMembers,
+  updateMemberStorage
 } from "./family.service";
 import type { Member } from "./family.schema";
 
 export const useMembers = () => {
   return useQuery({
     queryKey: ["members"],
-    queryFn: getMembers,
-  });
+    queryFn: getMembers
+  })
 }
 
 export const useSaveMember = () => {
@@ -36,6 +35,7 @@ export const useSaveMember = () => {
     },
   });
 };
+ 
 
 export const useUpdateMember = () =>  {
   const qc = useQueryClient();
@@ -51,6 +51,7 @@ export const useUpdateMember = () =>  {
     },
   });
 }
+
 
 export const useDeleteMember = () => {
   const qc = useQueryClient();
@@ -70,5 +71,6 @@ export const useDeleteMember = () => {
       toast.error(error.message ?? "Erro ao apagar o membro.");
     },
   });
-} 
- 
+}  
+
+
