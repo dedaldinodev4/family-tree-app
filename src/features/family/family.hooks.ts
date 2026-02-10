@@ -6,27 +6,20 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner"
 import {
-  deleteMemberStorage,
-  getMembers,
-  saveMembers,
-  updateMemberStorage
+ serviceMember
 } from "./family.service";
-import type { Member } from "./family.schema";
 
 export const useMembers = () => {
   return useQuery({
     queryKey: ["members"],
-    queryFn: getMembers
+    queryFn: serviceMember.getAll
   })
 }
 
 export const useSaveMember = () => {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: async (member: Member) => {
-      const members = await getMembers();
-      await saveMembers([...members, member]);
-    },
+    mutationFn: serviceMember.create,
     onSuccess: () => {
       toast.success("Membro adicionado com sucesso.");
       qc.invalidateQueries({
@@ -40,13 +33,15 @@ export const useSaveMember = () => {
 export const useUpdateMember = () =>  {
   const qc = useQueryClient();
   return  useMutation({
-    mutationFn: async (member: Member) => { 
-      await updateMemberStorage(member)
-    },
-    onSuccess: () => {
+    mutationFn: serviceMember.update,
+    onSuccess: (_, id ) => {
       toast.success("Membro editado com sucesso.");
-      qc.invalidateQueries({ 
-        queryKey: ["members"] 
+      qc.invalidateQueries({
+        queryKey: ["members"],
+      });
+
+      qc.invalidateQueries({
+        queryKey: ["members", id],
       });
     },
   });
@@ -57,13 +52,15 @@ export const useDeleteMember = () => {
   const qc = useQueryClient();
   const router = useRouter();
   return useMutation({
-    mutationFn: async (id: string) => {
-      await deleteMemberStorage(id)
-    },
-    onSuccess: () => {
+    mutationFn: serviceMember.delete,
+    onSuccess: (_, id) => {
       toast.success("Membro apagado com sucesso.");
-      qc.invalidateQueries({ 
-        queryKey: ["members"] 
+      qc.invalidateQueries({
+        queryKey: ["members"],
+      });
+
+      qc.invalidateQueries({
+        queryKey: ["members", id],
       });
       router.navigate({ to: "/members" });
     },

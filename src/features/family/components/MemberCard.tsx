@@ -37,9 +37,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Input } from "@/components/ui/input";
 
-import { Pencil, Trash2, X, Phone, Cake} from "lucide-react";
+import { Pencil, Trash2, X, Phone, Cake } from "lucide-react";
 
-import { MemberSchema, type Member } from "../family.schema";
+import { 
+  updateMemberSchema, 
+  type Member, 
+  type UpdateMember 
+} from "../family.schema";
 import { useDeleteMember, useUpdateMember } from "../family.hooks";
 import { fileToBase64 } from "@/shared/utils/fileToBase64";
 import { ParentSelectField } from "./ParentSelectField";
@@ -56,12 +60,12 @@ export function MemberCard({ member }: { member: Member }) {
   const deleteMember = useDeleteMember()
   const updateMember = useUpdateMember();
 
-  const form = useForm<Member>({
-    resolver: zodResolver(MemberSchema),
+  const form = useForm<UpdateMember>({
+    resolver: zodResolver(updateMemberSchema),
     defaultValues: {
       ...member,
-      birthDate: member.birthDate ? 
-      new Date(member.birthDate) : undefined
+      birthDate: member.birthDate ?
+        new Date(member.birthDate) : undefined
     },
   });
 
@@ -69,13 +73,11 @@ export function MemberCard({ member }: { member: Member }) {
     handleSubmit, register
   } = form;
 
-  const onSubmit = (data: Member) => {
-    updateMember.mutate(
-      {
-        ...data,
-        birthDate: data.birthDate ? new Date(data.birthDate) : undefined
-      }
-    );
+  const onSubmit = (data: UpdateMember) => {
+    updateMember.mutate({
+      id: member.id,
+      payload: data
+    });
     setEditOpen(false);
   }
 
@@ -98,7 +100,7 @@ export function MemberCard({ member }: { member: Member }) {
         <div className="flex flex-col items-center gap-3">
 
           <Avatar className="w-24 h-24 border-2 border-gray-200 shadow-md rounded-full">
-            <AvatarImage src={member.photo} />
+            {member.photo && <AvatarImage src={member.photo} />}
             <AvatarFallback>{member.name.charAt(0)}</AvatarFallback>
           </Avatar>
 
@@ -217,13 +219,13 @@ export function MemberCard({ member }: { member: Member }) {
                       </PopoverTrigger>
 
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
+                        {field.value !== null && <Calendar
                           mode="single"
                           selected={field.value}
                           onSelect={field.onChange}
                           locale={ptBR}
                           captionLayout="dropdown"
-                        />
+                        />}
                       </PopoverContent>
                     </Popover>
 

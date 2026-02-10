@@ -1,44 +1,37 @@
-import type { Member } from "./family.schema";
-
-const KEY = "family_members";
-
-export const getMembers = async (): Promise<Member[]> =>
-  JSON.parse(localStorage.getItem(KEY) || "[]");
-
-export const saveMembers = async (members: Member[]) =>
-  localStorage.setItem(KEY, JSON.stringify(members));
-
-export const updateMemberStorage = async (data: Member) => {
-  const stored = localStorage.getItem(KEY);
-  if (!stored) return [];
-
-  const members: Member[] = JSON.parse(stored);
-
-  const newMembers = members.map((member) =>
-    member.id === data.id ? { ...member, ...data } : member
-  );
-
-  localStorage.setItem(KEY, JSON.stringify(newMembers));
-
-  return newMembers;
-}
-
-export const deleteMemberStorage = async (id: string) => {
-  const stored = localStorage.getItem(KEY);
-  if (!stored) return [];
-
-  let members: Member[] = JSON.parse(stored);
+import { 
+  type CreateMember, 
+  type Member, 
+  type UpdateMember 
+} from "./family.schema";
+import { api } from "@/lib/api";
 
 
-  const hasChildren = members.some((m) => m.parentId === id);
-  if (hasChildren) {
-    throw new Error("Este membro tem descendentes. Remova-os primeiro.");
+export const serviceMember = {
+  
+  async getAll (): Promise<Member[]> {
+    const response = await api.get('/members');
+    const { data } = response
+    return data.data
+  },
+
+  async create (payload: CreateMember) {
+    const response = await api.post(`/members`, payload)
+    return response.data;
+  },
+
+  async getOne(id: string) {
+    const response = await api.get(`/members/${id}`);
+    return response.data;
+  },
+
+  async update({id, payload, }: { id: string; payload: UpdateMember;}) {
+    const response = await api.put(`/members/${id}`, payload)
+    return response.data;
+  },
+
+  async delete (id: string) {
+    const response = await api.delete(`/members/${id}`)
+    return response.data;
   }
-
-  const newMembers = members.filter((member) => member.id !== id);
-  localStorage.setItem(KEY, JSON.stringify(newMembers));
-
-  return newMembers;
-};
-
+}
 

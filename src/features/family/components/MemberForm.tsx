@@ -1,9 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { MemberSchema, type Member } from "../family.schema";
+import { 
+  type CreateMember, 
+  createMemberSchema 
+} from "../family.schema";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { v4 as uuid } from "uuid";
 import { useSaveMember } from "../family.hooks";
 import { fileToBase64 } from "@/shared/utils/fileToBase64";
 import {
@@ -26,8 +28,8 @@ export function MemberForm() {
 
   const save = useSaveMember();
 
-  const form = useForm<Member>({
-    resolver: zodResolver(MemberSchema),
+  const form = useForm<CreateMember>({
+    resolver: zodResolver(createMemberSchema),
     defaultValues: {
       name: "",
       role: "",
@@ -38,15 +40,15 @@ export function MemberForm() {
   });
 
   const {
-    handleSubmit, register
+    handleSubmit, register,
+    formState: { errors }
   } = form;
 
-  const onSubmit = (data: Member) => {
-
-    save.mutate({ 
-      ...data, 
-      id: uuid(),
-      birthDate: data.birthDate ? new Date(data.birthDate?.toISOString()) : undefined
+  const onSubmit = (data: CreateMember) => {
+    console.log(data)
+    save.mutate({
+      ...data,
+      birthDate: data.birthDate ? new Date(data.birthDate) : null
     })
   }
 
@@ -113,13 +115,13 @@ export function MemberForm() {
                 </PopoverTrigger>
 
                 <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
+                  {field.value !== null && <Calendar
                     mode="single"
                     selected={field.value}
                     onSelect={field.onChange}
                     locale={ptBR}
                     captionLayout="dropdown"
-                  />
+                  />}
                 </PopoverContent>
               </Popover>
 
@@ -131,6 +133,7 @@ export function MemberForm() {
         <Input placeholder="Telefone" type="text" {...register("phone")} />
         <ParentSelectField />
 
+        {errors.name && <span>{errors.name.message}</span>}
         <Button className="cursor-pointer" type="submit">Adicionar</Button>
       </form>
     </Form>
